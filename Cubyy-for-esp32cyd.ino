@@ -103,7 +103,8 @@ String generateScramble(int length = 20) {
   int count = 0;
 
   while (count < length) {
-    char newFace = faces[random(0, 6)];
+    // Użycie sprzętowego generatora liczb losowych ESP32 (esp_random)
+    char newFace = faces[esp_random() % 6];
     char last = (count > 0) ? scrambleFaces[count - 1] : '\0';
     char prevToLast = (count > 1) ? scrambleFaces[count - 2] : '\0';
 
@@ -115,7 +116,7 @@ String generateScramble(int length = 20) {
 
     if (last != '\0' && isOpposite && newFace == prevToLast) continue;
 
-    String mod = modifiers[random(0, 3)];
+    String mod = modifiers[esp_random() % 3];
     scrambleFaces[count] = newFace;
     
     if (count > 0) scrambleResult += " ";
@@ -364,12 +365,12 @@ static void notifyCallback(
   switch (stateCode) {
     case 6: // HANDS_ON / PREPARE
       currentTimerStatus = HANDS_BOTH_PREPARE;
-      solveAlreadySaved = false; // Reset flagi na starcie przygotowania
+      solveAlreadySaved = false;
       break;
 
     case 1: // READY
       currentTimerStatus = HANDS_READY;
-      solveAlreadySaved = false; // Reset flagi gdy timer gotowy
+      solveAlreadySaved = false;
       break;
 
     case 2: // HANDS_OFF
@@ -387,7 +388,7 @@ static void notifyCallback(
         isTimerRunning = true;
         localStartMillis = millis();
         ganHardwareTimeMs = 0;
-        solveAlreadySaved = false; // Reset flagi podczas biegu
+        solveAlreadySaved = false;
       }
       currentTimerStatus = TIMER_RUNNING;
       break;
@@ -409,9 +410,8 @@ static void notifyCallback(
         ganHardwareTimeMs = localElapsedMillis;
       }
 
-      // --- JEDNORAZOWY ZAPIS I GENEROWANIE NOWEGO SCRAMBLE ---
       if (!solveAlreadySaved) {
-        solveAlreadySaved = true; // Zablokowanie kolejnych pakietów powiadomień
+        solveAlreadySaved = true;
         saveSolveToSD(ganHardwareTimeMs, currentScramble);
         currentScramble = generateScramble();
         scrambleNeedsUpdate = true;
@@ -553,8 +553,6 @@ void setup() {
   touchSpi.begin(XPT2046_CLK, XPT2046_MISO, XPT2046_MOSI, XPT2046_CS);
   ts.begin(touchSpi);
   ts.setRotation(1);
-
-  randomSeed(analogRead(34) + micros());
 
   BLEDevice::init("CYD_Gan_Timer");
   drawMainUI();
