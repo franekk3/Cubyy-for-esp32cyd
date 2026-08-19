@@ -1,40 +1,74 @@
 
-# Cubyy-for-esp32cyd
-### Description:
-Cubyy-for-esp32cyd is Free, Open Source speedcubing timer made for cyd (cheap yellow display) board by using Arduino IDE and it's libraries. It uses BLE to connect to GAN Halo Bluetooth Smart Timer, collects state and solve resoults from it, displays them and saves for microSD card (if used). Cubyy-esp32 it self doesn't have option to start timer without bluetooth timer.
+# Cubyy for ESP32 CYD
 
-### Requirements:
-- Esp 32 CYD (tested on ESP32-2432S028)
-- Gan halo bluetooth smart timer
-- Desktop with Arduino IDE installed
-### Setup: 
-1. Add ESP board's to Arduino IDE, by going to 
+Cubyy for ESP32 CYD is a free, open-source speedcubing timer created for the Cheap Yellow Display (CYD) board using the Arduino IDE. It uses Bluetooth Low Energy (BLE) to connect to a GAN Smart Timer, collects state and solve results in real time, displays them on screen, and saves solve history to a microSD card.
 
-		File --> Preferences --> Additional board manager URL
+> **Note:** Cubyy requires an external BLE timer (such as the GAN Smart Timer) to measure solves and cannot be used as a standalone manual touch timer.
 
-	input:
-   
-		https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json
-	then go to "Board manager"
-	and search for "esp32" and install library by "Espressif Systems"
-2. Install requied libraries:
-- "ArduinoJson" by Benoit Blanchon.
-- "NimBLE-Arduino" by h2zero
-- "TFT_eSPI" by Bodmer
-- "XPT2046_Touchscreen" by Paul Stoffregen
-3. Download **Cubyy-for-esp32cyd.ino** file from GitHub repo.
-4. Run code
-### Pictures:
+---
 
-### Futures: 
-- Scramble Generation
-- Reading state & results from Gan Timer
-- Saving solves to microSD card in cstimer.net format.
-- Easy time moving into [Cubyy Web](cubyy.vercel.app) timer, and other speedcubing timers using cstimer.net format. *
-<sub>* - works only if you use microSD card. </sub>
-### Plans for future updates:
-- Local statistics
-- Other cubes
-- Sessions
-- online sync with Cubyy Web? **
-<sub>** - maybe in late future, Cubyy currently don't have cloud servers for backups</sub>
+## Requirements
+
+- **Hardware:**
+  - ESP32 CYD board (tested on `ESP32-2432S028R`)
+  - GAN Smart Timer (GAN Halo)
+  - MicroSD card (formatted to **FAT32**)
+- **Software:**
+  - Desktop computer with Arduino IDE installed
+
+---
+
+## Setup Guide
+
+### 1. Add ESP32 Board Support
+1. In Arduino IDE, go to **File -> Preferences**.
+2. Add the following URL into **Additional boards manager URLs**:
+
+   [https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json](https://raw.githubusercontent.com/espressif/arduino-esp32/gh-pages/package_esp32_index.json)
+
+3. Go to **Tools -> Board -> Boards Manager**, search for `esp32`, and install the package by **Espressif Systems**.
+
+### 2. Install Required Libraries
+Go to **Tools -> Manage Libraries** and install the following:
+- **ArduinoJson** (by Benoit Blanchon)
+- **TFT_eSPI** (by Bodmer)
+- **XPT2046_Touchscreen** (by Paul Stoffregen)
+
+### 3. Uploading Code
+1. Download the `Cubyy-cyd-for-esp32.ino` file from this repository.
+2. Open the file in Arduino IDE, select your ESP32 board and port, then click **Upload to board**.
+
+---
+
+## Screenshots
+
+<table> <tr> <td align="center"> <img src="https://github.com/franekk3/Cubyy-for-cyd/blob/main/pictures/esp32-screen1.jpg?raw=true" alt="Image1" width="300"><br> <sub> Scanning device screen</sub> </td><td align="center"> <img src="https://github.com/franekk3/Cubyy-for-cyd/blob/main/pictures/esp32-screen2.jpg?raw=true" alt="Image2" width="300"><br> <sub> Esp32 finding Gan timer </sub> </td> </tr> </table>
+<table> <tr> <td align="center"> <img src="https://github.com/franekk3/Cubyy-for-cyd/blob/main/pictures/esp32-screen3.jpg?raw=true" alt="Image3" width="300"><br> <sub> Timer Screen </sub> </td><td align="center"> <img src="https://github.com/franekk3/Cubyy-for-cyd/blob/main/pictures/esp32-screen4.jpg?raw=true" alt="Image4" width="300"><br> <sub>Sample Solve </sub> </td> </tr> </table>
+
+---
+
+## Features
+
+- **Scramble Generator:** Built-in 3x3 scramble generator.
+- **BLE Timer Integration:** Reads timer states and exact times directly from GAN Smart Timers.
+- **MicroSD Session Logging:** Saves solves to `/cubyy_session.json` on the microSD card in standard csTimer format.
+- **Seamless Export:** Easily import your microSD session file into [Cubyy Web](https://cubyy.vercel.app) or any other timer supporting csTimer formats.*
+
+*\*Solves are saved only when a compatible microSD card is inserted.*
+
+---
+
+## Future Roadmap
+
+- Local solve statistics (Ao5, Ao12, Personal Bests)
+- Support for additional puzzle types
+- Multi-session support directly on the device
+- Cloud synchronization with Cubyy Web **
+
+*\*\*Cubyy currently does not utilize cloud servers for automatic online backups.*
+
+---
+
+## License
+
+Distributed under the GPL-3.0 License.
